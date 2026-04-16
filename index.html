@@ -1,0 +1,773 @@
+
+# Create the complete interactive lesson webpage for 9th grade computer science
+# Topic: Array Sorting Algorithms in Python
+
+html_content = '''<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Алгоритми впорядкування масивів у Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            color: #5a67d8;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: #5a67d8;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .question-box {
+            background: #f0f4ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #5a67d8;
+        }
+
+        .question-box h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .example-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-block .comment {
+            color: #68d391;
+        }
+
+        .code-block .keyword {
+            color: #f687b3;
+        }
+
+        .code-block .string {
+            color: #f6e05e;
+        }
+
+        .code-block .function {
+            color: #63b3ed;
+        }
+
+        .interactive-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .array-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .array-item {
+            width: 60px;
+            height: 60px;
+            background: white;
+            color: #764ba2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .array-item.sorted {
+            background: #68d391;
+            color: white;
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .btn {
+            background: white;
+            color: #764ba2;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .select-box {
+            margin: 15px 0;
+        }
+
+        .select-box select {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1em;
+            background: white;
+            color: #764ba2;
+            cursor: pointer;
+        }
+
+        .task-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            border-color: #764ba2;
+            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.2);
+        }
+
+        .task-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+        }
+
+        .task-card.game {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: none;
+        }
+
+        .task-card.words {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: none;
+        }
+
+        .task-card.compare {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border: none;
+        }
+
+        .quiz-option {
+            background: #f0f4ff;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e6fffa;
+            border-color: #38b2ac;
+        }
+
+        .quiz-option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+
+        .quiz-option.wrong {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+
+        .quiz-result {
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .quiz-result.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .quiz-result.fail {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .algorithm-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .algorithm-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .summary-box h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            
+            .array-item {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2em;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Алгоритми впорядкування масивів у Python</h1>
+            <p>Інтерактивний урок для 9 класу</p>
+        </header>
+
+        <!-- Вступ -->
+        <section class="section">
+            <h2>📚 Вступ</h2>
+            
+            <div class="question-box">
+                <h4>🤔 Запитання для роздумів:</h4>
+                <ul>
+                    <li>Як ви шукаєте потрібну книгу в бібліотеці?</li>
+                    <li>Чому контакти в телефоні розташовані за алфавітом?</li>
+                    <li>Як ви розкладаєте речі у шафі?</li>
+                </ul>
+            </div>
+
+            <div class="example-box">
+                <h4>🎯 Життєві приклади сортування:</h4>
+                <p><span class="emoji">📚</span>Книги в бібліотеці — за алфавітом чи номерами</p>
+                <p><span class="emoji">👥</span>Учні в журналі — за прізвищами</p>
+                <p><span class="emoji">🏆</span>Спортивний рейтинг — за кількістю очок</p>
+                <p><span class="emoji">🎵</span>Плейлист — за виконавцями або жанрами</p>
+            </div>
+
+            <h3>Навіщо потрібне сортування?</h3>
+            <p>Сортування допомагає <span class="highlight">швидко знаходити</span> потрібну інформацію, <span class="highlight">полегшує аналіз</span> даних і робить їх <span class="highlight">зрозумілішими</span> для людини. Комп'ютери сортують дані набагато швидше за людей!</p>
+        </section>
+
+        <!-- Теоретичний блок -->
+        <section class="section">
+            <h2>📖 Теоретичний блок</h2>
+            
+            <h3>Що таке масив?</h3>
+            <p><strong>Масив</strong> — це структура даних, що зберігає набір елементів <span class="highlight">одного типу</span> (числа, текст тощо) у певному порядку. Уявіть ряд клітинок, кожна з яких містить значення.</p>
+            
+            <div class="code-block">
+<span class="comment"># Масив чисел</span>
+numbers = [5, 2, 8, 1, 9]
+            </div>
+
+            <h3>Що таке список (list) у Python?</h3>
+            <p><strong>Список</strong> у Python — це гнучкіша структура, ніж класичний масив. Він може містити елементи <span class="highlight">різних типів</span> і легко змінювати свій розмір.</p>
+            
+            <div class="code-block">
+<span class="comment"># Список може містити різні типи даних</span>
+my_list = [<span class="string">"Іван"</span>, 15, <span class="string">"Київ"</span>, 85.5, <span class="keyword">True</span>]
+            </div>
+
+            <h3>Різниця між масивом і списком</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #f0f4ff;">
+                    <th style="padding: 12px; border: 1px solid #ddd;">Ознака</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Масив</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Список Python</th>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Типи елементів</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Тільки однакові</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Різні можливі</td>
+                </tr>
+                <tr style="background: #f9f9f9;">
+                    <td style="padding: 12px; border: 1px solid #ddd;">Розмір</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Фіксований</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Змінний</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Гнучкість</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Обмежена</td>
+                    <td style="padding: 12px; border: 1px solid #ddd;">Висока</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Пояснення сортування -->
+        <section class="section">
+            <h2>🔄 Що таке сортування?</h2>
+            
+            <p><strong>Сортування</strong> — це процес розташування елементів у певному порядку (зазвичай за зростанням або спаданням).</p>
+
+            <div class="example-box">
+                <h4>🎴 Життєва аналогія: гра в карти</h4>
+                <p>Уявіть, що у вас в руках перемішана колода карт: <strong>7♠, 3♥, 9♦, 2♣</strong></p>
+                <p>Щоб знайти потрібну карту швидше, ви розкладаєте їх за порядком: <strong>2♣, 3♥, 7♠, 9♦</strong></p>
+                <p>Тепер легко побачити, які карти у вас є!</p>
+            </div>
+
+            <h3>Види сортування:</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li><span class="highlight">За зростанням (ascending):</span> від меншого до більшого (1, 2, 3, 4, 5)</li>
+                <li><span class="highlight">За спаданням (descending):</span> від більшого до меншого (5, 4, 3, 2, 1)</li>
+            </ul>
+        </section>
+
+        <!-- Алгоритми сортування -->
+        <section class="section">
+            <h2>⚙️ Алгоритми сортування</h2>
+            
+            <div class="algorithm-card">
+                <h4>🚀 1. Вбудоване сортування Python (sort / sorted)</h4>
+                <p>Найпростіший спосіб — використати готові функції Python.</p>
+                <div class="code-block" style="background: rgba(0,0,0,0.3);">
+numbers = [5, 2, 8, 1, 9]
+numbers.<span class="function">sort</span>()  <span class="comment"># Сортує список на місці</span>
+<span class="comment"># Результат: [1, 2, 5, 8, 9]</span>
+                </div>
+            </div>
+
+            <div class="algorithm-card">
+                <h4>🫧 2. Сортування бульбашкою (Bubble Sort)</h4>
+                <p>Порівнюємо сусідні елементи і міняємо місцями, якщо вони у неправильному порядку. Процес повторюється, поки всі елементи не стануть на свої місця.</p>
+                <p style="margin-top: 10px; font-style: italic;">💡 Назва походить від того, що більші елементи "спливають" наверх, як бульбашки повітря у воді.</p>
+            </div>
+
+            <div class="algorithm-card">
+                <h4>🎯 3. Сортування вибором (Selection Sort)</h4>
+                <p>Знаходимо найменший елемент і ставимо його на перше місце. Потім шукаємо наступний найменший серед решти і ставимо на друге місце. І так далі.</p>
+                <p style="margin-top: 10px; font-style: italic;">💡 Якщо вибирати найбільший елемент — отримаємо сортування за спаданням.</p>
+            </div>
+        </section>
+
+        <!-- Інтерактив -->
+        <section class="section">
+            <h2>🎮 Інтерактивна демонстрація</h2>
+            
+            <div class="interactive-box">
+                <h3 style="color: white; margin-bottom: 20px;">Спробуй відсортувати масив!</h3>
+                
+                <p>Поточний масив:</p>
+                <div class="array-display" id="arrayDisplay">
+                    <div class="array-item">45</div>
+                    <div class="array-item">12</div>
+                    <div class="array-item">78</div>
+                    <div class="array-item">23</div>
+                    <div class="array-item">67</div>
+                    <div class="array-item">5</div>
+                    <div class="array-item">89</div>
+                </div>
+
+                <div class="select-box">
+                    <label style="margin-right: 10px;">Напрямок сортування:</label>
+                    <select id="sortDirection">
+                        <option value="asc">За зростанням ↑</option>
+                        <option value="desc">За спаданням ↓</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="sortArray()">🚀 Відсортувати</button>
+                <button class="btn btn-secondary" onclick="resetArray()">🔄 Новий масив</button>
+                
+                <p id="sortMessage" style="margin-top: 20px; font-weight: bold;"></p>
+            </div>
+        </section>
+
+        <!-- Практичні завдання -->
+        <section class="section">
+            <h2>✏️ Практичні завдання</h2>
+            
+            <div class="task-card game">
+                <h4>🎮 Завдання 1: Рейтинг гравців</h4>
+                <p>У грі є 5 гравців з такими очками: <strong>[120, 450, 230, 890, 340]</strong></p>
+                <p>Напиши код, який виведе ТОП-3 гравців (за спаданням очок).</p>
+                <button class="btn" onclick="toggleSolution('sol1')" style="padding: 8px 16px; font-size: 0.9em;">Показати розв'язок</button>
+                <div id="sol1" class="hidden code-block" style="margin-top: 10px;">
+points = [120, 450, 230, 890, 340]
+points.sort(reverse=True)  <span class="comment"># reverse=True — за спаданням</span>
+<span class="function">print</span>(<span class="string">"ТОП-3:"</span>, points[:3])
+                </div>
+            </div>
+
+            <div class="task-card words">
+                <h4>🔤 Завдання 2: Сортування слів</h4>
+                <p>Є список міст: <strong>["Київ", "Львів", "Одеса", "Харків", "Дніпро"]</strong></p>
+                <p>Відсортуй їх за алфавітом та виведи перше і останнє місто.</p>
+                <button class="btn" onclick="toggleSolution('sol2')" style="padding: 8px 16px; font-size: 0.9em;">Показати розв'язок</button>
+                <div id="sol2" class="hidden code-block" style="margin-top: 10px;">
+cities = [<span class="string">"Київ"</span>, <span class="string">"Львів"</span>, <span class="string">"Одеса"</span>, <span class="string">"Харків"</span>, <span class="string">"Дніпро"</span>]
+cities.sort()
+<span class="function">print</span>(<span class="string">"Перше:"</span>, cities[0])   <span class="comment"># Дніпро</span>
+<span class="function">print</span>(<span class="string">"Останнє:"</span>, cities[-1]) <span class="comment"># Харків</span>
+                </div>
+            </div>
+
+            <div class="task-card compare">
+                <h4>⚖️ Завдання 3: Порівняння алгоритмів</h4>
+                <p>Дано масив: <strong>[64, 34, 25, 12, 22, 11, 90]</strong></p>
+                <p>Скільки порівнянь потрібно зробити методом бульбашки, щоб знайти найбільший елемент?</p>
+                <p><em>Підказка: у бульбашковому сортуванні найбільший елемент "спливає" на кінець за один прохід.</em></p>
+                <button class="btn" onclick="toggleSolution('sol3')" style="padding: 8px 16px; font-size: 0.9em;">Показати відповідь</button>
+                <div id="sol3" class="hidden" style="margin-top: 10px; padding: 15px; background: white; border-radius: 10px;">
+                    <strong>Відповідь: 6 порівнянь</strong><br>
+                    (64→34, 64→25, 64→12, 64→22, 64→11, 64→90 — знайшли 90)
+                </div>
+            </div>
+
+            <div class="task-card">
+                <h4>🔄 Завдання 4: Зворотний порядок</h4>
+                <p>Напиши код, який перевертає список (не сортує, а просто змінює порядок елементів на протилежний).</p>
+                <p>Вхід: <strong>[1, 2, 3, 4, 5]</strong> → Вихід: <strong>[5, 4, 3, 2, 1]</strong></p>
+                <button class="btn" onclick="toggleSolution('sol4')" style="padding: 8px 16px; font-size: 0.9em;">Показати розв'язок</button>
+                <div id="sol4" class="hidden code-block" style="margin-top: 10px;">
+lst = [1, 2, 3, 4, 5]
+lst.reverse()  <span class="comment"># або lst[::-1]</span>
+<span class="function">print</span>(lst)  <span class="comment"># [5, 4, 3, 2, 1]</span>
+                </div>
+            </div>
+
+            <div class="task-card">
+                <h4>📊 Завдання 5: Середній бал</h4>
+                <p>Учень має оцінки: <strong>[9, 7, 10, 8, 9, 6, 10]</strong></p>
+                <p>Відсортуй оцінки за зростанням і знайди медіану (середнє значення посередині).</p>
+                <button class="btn" onclick="toggleSolution('sol5')" style="padding: 8px 16px; font-size: 0.9em;">Показати розв'язок</button>
+                <div id="sol5" class="hidden code-block" style="margin-top: 10px;">
+grades = [9, 7, 10, 8, 9, 6, 10]
+grades.sort()
+median = grades[len(grades) // 2]  <span class="comment"># grades[3] = 9</span>
+<span class="function">print</span>(<span class="string">"Медіана:"</span>, median)
+                </div>
+            </div>
+        </section>
+
+        <!-- Міні-тест -->
+        <section class="section">
+            <h2>📝 Міні-тест</h2>
+            
+            <div id="quiz">
+                <div class="question-box">
+                    <h4>Питання 1: Що робить метод sort() у Python?</h4>
+                    <div class="quiz-option" onclick="checkAnswer(1, 'a', this)">a) Створює новий відсортований список</div>
+                    <div class="quiz-option" onclick="checkAnswer(1, 'b', this)">b) Сортує список на місці (змінює оригінал)</div>
+                    <div class="quiz-option" onclick="checkAnswer(1, 'c', this)">c) Видаляє всі елементи списку</div>
+                </div>
+
+                <div class="question-box">
+                    <h4>Питання 2: Який алгоритм сортування називають "бульбашковим"?</h4>
+                    <div class="quiz-option" onclick="checkAnswer(2, 'a', this)">a) Той, що знаходить найменший елемент</div>
+                    <div class="quiz-option" onclick="checkAnswer(2, 'b', this)">b) Той, що порівнює сусідні елементи і міняє їх місцями</div>
+                    <div class="quiz-option" onclick="checkAnswer(2, 'c', this)">c) Той, що використовує випадковість</div>
+                </div>
+
+                <div class="question-box">
+                    <h4>Питання 3: Як відсортувати список за спаданням?</h4>
+                    <div class="quiz-option" onclick="checkAnswer(3, 'a', this)">a) list.sort(up=False)</div>
+                    <div class="quiz-option" onclick="checkAnswer(3, 'b', this)">b) list.sort(reverse=True)</div>
+                    <div class="quiz-option" onclick="checkAnswer(3, 'c', this)">c) list.sort(descending)</div>
+                </div>
+
+                <div class="question-box">
+                    <h4>Питання 4: Що таке масив?</h4>
+                    <div class="quiz-option" onclick="checkAnswer(4, 'a', this)">a) Одиночна змінна</div>
+                    <div class="quiz-option" onclick="checkAnswer(4, 'b', this)">b) Структура для зберігання набору елементів</div>
+                    <div class="quiz-option" onclick="checkAnswer(4, 'c', this)">c) Математична функція</div>
+                </div>
+
+                <div class="question-box">
+                    <h4>Питання 5: Скільки елементів містить список [1, 2, 3][1:3]?</h4>
+                    <div class="quiz-option" onclick="checkAnswer(5, 'a', this)">a) 1</div>
+                    <div class="quiz-option" onclick="checkAnswer(5, 'b', this)">b) 2 (елементи 2 і 3)</div>
+                    <div class="quiz-option" onclick="checkAnswer(5, 'c', this)">c) 3</div>
+                </div>
+
+                <button class="btn" onclick="showQuizResults()" style="margin-top: 20px;">Перевірити результат</button>
+                <div id="quizResult" class="hidden"></div>
+            </div>
+        </section>
+
+        <!-- Висновок -->
+        <section class="section">
+            <div class="summary-box">
+                <h3>🎓 Підсумок уроку</h3>
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                    ✅ Ми дізналися, що таке <strong>масиви</strong> і <strong>списки</strong> у Python<br>
+                    ✅ Зрозуміли, навіщо потрібне <strong>сортування</strong> даних<br>
+                    ✅ Вивчили три алгоритми: <strong>вбудований sort</strong>, <strong>бульбашковий</strong> і <strong>вибором</strong><br>
+                    ✅ Навчилися сортувати за <strong>зростанням</strong> і <strong>спаданням</strong><br>
+                    ✅ Вирішили <strong>5 практичних задач</strong>
+                </p>
+                <p style="margin-top: 20px; font-size: 1.2em;">🌟 Тепер ти можеш впорядковувати будь-які дані у Python!</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Інтерактивний масив
+        let currentArray = [45, 12, 78, 23, 67, 5, 89];
+        let isSorted = false;
+
+        function sortArray() {
+            const direction = document.getElementById('sortDirection').value;
+            const display = document.getElementById('arrayDisplay');
+            const message = document.getElementById('sortMessage');
+            
+            let sortedArray = [...currentArray];
+            
+            if (direction === 'asc') {
+                sortedArray.sort((a, b) => a - b);
+                message.textContent = '✅ Відсортовано за зростанням!';
+            } else {
+                sortedArray.sort((a, b) => b - a);
+                message.textContent = '✅ Відсортовано за спаданням!';
+            }
+            
+            // Анімація сортування
+            display.innerHTML = '';
+            sortedArray.forEach((num, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'array-item sorted';
+                    div.textContent = num;
+                    display.appendChild(div);
+                }, index * 100);
+            });
+            
+            isSorted = true;
+        }
+
+        function resetArray() {
+            currentArray = Array.from({length: 7}, () => Math.floor(Math.random() * 100) + 1);
+            const display = document.getElementById('arrayDisplay');
+            const message = document.getElementById('sortMessage');
+            
+            display.innerHTML = '';
+            currentArray.forEach(num => {
+                const div = document.createElement('div');
+                div.className = 'array-item';
+                div.textContent = num;
+                display.appendChild(div);
+            });
+            
+            message.textContent = '🎲 Створено новий масив!';
+            isSorted = false;
+        }
+
+        // Показати/приховати розв'язок
+        function toggleSolution(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle('hidden');
+        }
+
+        // Тест
+        const answers = {1: 'b', 2: 'b', 3: 'b', 4: 'b', 5: 'b'};
+        let userAnswers = {};
+
+        function checkAnswer(question, answer, element) {
+            userAnswers[question] = answer;
+            
+            // Зняти виділення з інших варіантів цього питання
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('correct', 'wrong'));
+            
+            element.classList.add('selected');
+        }
+
+        function showQuizResults() {
+            let correct = 0;
+            const total = 5;
+            
+            for (let i = 1; i <= total; i++) {
+                const options = document.querySelectorAll(`.question-box:nth-of-type(${i}) .quiz-option`);
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'wrong');
+                    if (opt.textContent.startsWith(answers[i])) {
+                        opt.classList.add('correct');
+                    }
+                });
+                
+                if (userAnswers[i] === answers[i]) {
+                    correct++;
+                } else if (userAnswers[i]) {
+                    options.forEach(opt => {
+                        if (opt.textContent.startsWith(userAnswers[i])) {
+                            opt.classList.add('wrong');
+                        }
+                    });
+                }
+            }
+            
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.remove('hidden', 'success', 'fail');
+            
+            if (correct >= 4) {
+                resultDiv.classList.add('success');
+                resultDiv.innerHTML = `<h3>🎉 Відмінно! ${correct}/${total} правильних відповідей!</h3><p>Ти чудово засвоїв матеріал уроку!</p>`;
+            } else if (correct >= 3) {
+                resultDiv.classList.add('success');
+                resultDiv.innerHTML = `<h3>👍 Добре! ${correct}/${total} правильних відповідей</h3><p>Переглянь теорію ще раз, щоб закріпити знання.</p>`;
+            } else {
+                resultDiv.classList.add('fail');
+                resultDiv.innerHTML = `<h3>📚 Потрібно ще попрацювати: ${correct}/${total}</h3><p>Повернися до теоретичного блоку і спробуй ще раз!</p>`;
+            }
+        }
+    </script>
+</body>
+</html>'''
+
+# Save the file
+file_path = '/mnt/kimi/output/sorting_lesson.html'
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print(f"✅ Файл створено: {file_path}")
+print(f"📄 Розмір файлу: {len(html_content)} символів")
